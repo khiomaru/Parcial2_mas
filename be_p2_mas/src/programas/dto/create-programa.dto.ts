@@ -1,5 +1,14 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDateString, IsDefined, IsIn, IsInt, IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator';
+import {
+  IsDateString,
+  IsDefined,
+  IsIn,
+  IsInt,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 import { NivelAcademico } from 'src/niveles_academicos/entities/nivel-academico.entity';
 
 export class CreateProgramaDto {
@@ -44,6 +53,9 @@ export class CreateProgramaDto {
   @IsNotEmpty({ message: 'El campo estado es obligatorio' })
   @IsString({ message: 'El campo estado debe ser de tipo cadena' })
   @MaxLength(20, { message: 'El campo estado no debe ser mayor a 20 caracteres' })
-  @IsIn(['En Planificación', 'En curso', 'Finalizado'], { message: 'El campo estado debe ser uno de los valores permitidos: En Planificación, En curso, Finalizado' })
+  @IsIn(['En Planificación', 'En curso', 'Finalizado'], {
+    message:
+      'El campo estado debe ser uno de los valores permitidos: En Planificación, En curso, Finalizado',
+  })
   readonly estado: string;
 }

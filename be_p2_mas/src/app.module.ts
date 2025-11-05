@@ -16,7 +16,7 @@ import { NivelesAcademicosModule } from './niveles_academicos/niveles_academicos
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [__dirname + '*/**/entities/*.{ts|js}'],
+      entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
       autoLoadEntities: true,
     }),

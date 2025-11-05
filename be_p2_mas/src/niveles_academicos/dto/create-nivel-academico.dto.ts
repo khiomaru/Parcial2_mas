@@ -6,7 +6,10 @@ export class CreateNivelAcademicoDto {
   @IsNotEmpty({ message: 'El campo nombre es obligatorio' })
   @IsString({ message: 'El campo nombre debe ser de tipo cadena' })
   @MaxLength(20, { message: 'El campo nombre no debe ser mayor a 20 caracteres' })
-  @IsIn(['Diplomado', 'Especialidad', 'Maestría', 'Doctorado'], { message: 'El campo nombre debe ser uno de los valores permitidos: Diplomado, Especialidad, Maestría, Doctorado' })
+  @IsIn(['Diplomado', 'Especialidad', 'Maestría', 'Doctorado'], {
+    message:
+      'El campo nombre debe ser uno de los valores permitidos: Diplomado, Especialidad, Maestría, Doctorado',
+  })
   readonly nombre: string;
 
   @ApiProperty()

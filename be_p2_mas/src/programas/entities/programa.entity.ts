@@ -30,7 +30,7 @@ export class Programa {
   @Column('integer', { name: 'duracion_meses' })
   duracionMeses: number;
 
-  @Column('decimal')
+  @Column('decimal', { precision: 10, scale: 2 })
   costo: number;
 
   @Column('date', { name: 'fecha_inicio' })

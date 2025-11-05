@@ -49,11 +49,7 @@ defineExpose({ obtenerLista })
       <div class="col-7 pl-0 mt-3">
         <InputGroup>
           <InputGroupAddon><i class="pi pi-search"></i></InputGroupAddon>
-          <InputText
-            v-model="busqueda"
-            type="text"
-            placeholder="Buscar por nombre"
-          />
+          <InputText v-model="busqueda" type="text" placeholder="Buscar por nombre" />
         </InputGroup>
       </div>
       <table>
@@ -65,11 +61,19 @@ defineExpose({ obtenerLista })
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(nivelAcademico, index) in nivelesAcademicosFiltrados" :key="nivelAcademico.id">
+          <tr
+            v-for="(nivelAcademico, index) in nivelesAcademicosFiltrados"
+            :key="nivelAcademico.id"
+          >
             <td>{{ index + 1 }}</td>
             <td>{{ nivelAcademico.nombre }}</td>
             <td>
-              <Button icon="pi pi-pencil" aria-label="Editar" text @click="emitirEdicion(nivelAcademico)" />
+              <Button
+                icon="pi pi-pencil"
+                aria-label="Editar"
+                text
+                @click="emitirEdicion(nivelAcademico)"
+              />
               <Button
                 icon="pi pi-trash"
                 aria-label="Eliminar"

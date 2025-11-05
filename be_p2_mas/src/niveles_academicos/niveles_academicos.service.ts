@@ -7,7 +7,10 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class NivelesAcademicosService {
-  constructor(@InjectRepository(NivelAcademico) private nivelesAcademicosRepository: Repository<NivelAcademico>) {}
+  constructor(
+    @InjectRepository(NivelAcademico)
+    private nivelesAcademicosRepository: Repository<NivelAcademico>,
+  ) {}
 
   async create(createNivelAcademicoDto: CreateNivelAcademicoDto): Promise<NivelAcademico> {
     const existe = await this.nivelesAcademicosRepository.findOneBy({
@@ -33,7 +36,10 @@ export class NivelesAcademicosService {
     return nivelAcademico;
   }
 
-  async update(id: number, updateNivelAcademicoDto: UpdateNivelAcademicoDto): Promise<NivelAcademico> {
+  async update(
+    id: number,
+    updateNivelAcademicoDto: UpdateNivelAcademicoDto,
+  ): Promise<NivelAcademico> {
     const nivelAcademico = await this.findOne(id);
     Object.assign(nivelAcademico, updateNivelAcademicoDto);
     return this.nivelesAcademicosRepository.save(nivelAcademico);

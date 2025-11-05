@@ -14,10 +14,10 @@ export class NivelAcademico {
   @PrimaryGeneratedColumn('identity')
   id: number;
 
-  @Column('varchar', { length: 20 })
+  @Column({ length: 20 })
   nombre: string;
 
-  @Column('varchar', { length: 500, nullable: true })
+  @Column({ length: 500, nullable: true })
   descripcion: string;
 
   @CreateDateColumn({ name: 'fecha_creacion' })

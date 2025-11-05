@@ -52,8 +52,7 @@ watch(
               : props.programa.fechaInicio,
           estado:
             estados.find(
-              (estado) =>
-                estado.toLowerCase() === (props.programa.estado?.toLowerCase() ?? ''),
+              (estado) => estado.toLowerCase() === (props.programa.estado?.toLowerCase() ?? ''),
             ) ?? '',
         }
       } else {
@@ -114,16 +113,16 @@ async function handleSave() {
       </div>
       <div class="flex items-center gap-4 mb-4">
         <label for="descripcion" class="font-semibold w-3">Descripción</label>
-        <Textarea id="descripcion" v-model="programa.descripcion" class="flex-auto" autocomplete="off" />
-      </div>
-      <div class="flex items-center gap-4 mb-4">
-        <label for="version" class="font-semibold w-3">Versión</label>
-        <InputNumber
-          id="version"
-          v-model="programa.version"
+        <Textarea
+          id="descripcion"
+          v-model="programa.descripcion"
           class="flex-auto"
           autocomplete="off"
         />
+      </div>
+      <div class="flex items-center gap-4 mb-4">
+        <label for="version" class="font-semibold w-3">Versión</label>
+        <InputNumber id="version" v-model="programa.version" class="flex-auto" autocomplete="off" />
       </div>
       <div class="flex items-center gap-4 mb-4">
         <label for="duracionMeses" class="font-semibold w-3">Duración (Meses)</label>

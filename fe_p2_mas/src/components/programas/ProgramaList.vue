@@ -86,7 +86,12 @@ defineExpose({ obtenerLista })
             <td>{{ programa.fechaInicio }}</td>
             <td>{{ programa.estado }}</td>
             <td>
-              <Button icon="pi pi-pencil" aria-label="Editar" text @click="emitirEdicion(programa)" />
+              <Button
+                icon="pi pi-pencil"
+                aria-label="Editar"
+                text
+                @click="emitirEdicion(programa)"
+              />
               <Button
                 icon="pi pi-trash"
                 aria-label="Eliminar"

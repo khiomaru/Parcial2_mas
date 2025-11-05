@@ -1,53 +1,35 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateProgramaDto } from './dto/create-programa.dto';
-import { UpdateProgramaDto } from './dto/update-programa.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Programa } from './entities/programa.entity';
+import { CreateProgramaDto } from './dto/create-programa.dto';
+import { UpdateProgramaDto } from './dto/update-programa.dto';
 
 @Injectable()
 export class ProgramasService {
-  constructor(@InjectRepository(Programa) private programasRepository: Repository<Programa>) {}
+  constructor(
+    @InjectRepository(Programa)
+    private readonly programasRepository: Repository<Programa>,
+  ) {}
 
   async create(createProgramaDto: CreateProgramaDto): Promise<Programa> {
     const existe = await this.programasRepository.findOneBy({
       idNivelAcademico: createProgramaDto.idNivelAcademico,
       nombre: createProgramaDto.nombre.trim(),
     });
-
     if (existe) throw new ConflictException('El programa ya existe');
 
-    const programa = new Programa();
-    programa.idNivelAcademico = createProgramaDto.idNivelAcademico;
-    programa.nombre = createProgramaDto.nombre.trim();
-    programa.descripcion = createProgramaDto.descripcion.trim();
-    programa.version = createProgramaDto.version;
-    programa.duracionMeses = createProgramaDto.duracionMeses;
-    programa.costo = createProgramaDto.costo;
-    programa.fechaInicio = createProgramaDto.fechaInicio;
-    programa.estado = createProgramaDto.estado.trim();
+    const programa = this.programasRepository.create(createProgramaDto);
     return this.programasRepository.save(programa);
   }
 
   async findAll(): Promise<Programa[]> {
-    return this.programasRepository.find({
+    const programas = await this.programasRepository.find({
       relations: { nivelAcademico: true },
       order: { idNivelAcademico: 'ASC' },
-      select: {
-        id: true,
-        nombre: true,
-        descripcion: true,
-        version: true,
-        duracionMeses: true,
-        costo: true,
-        fechaInicio: true,
-        estado: true,
-        nivelAcademico: {
-          id: true,
-          nombre: true,
-        },
-      },
     });
+    console.log('Programas encontrados:', programas);
+    return programas;
   }
 
   async findOne(id: number): Promise<Programa> {
@@ -55,9 +37,7 @@ export class ProgramasService {
       where: { id },
       relations: { nivelAcademico: true },
     });
-
     if (!programa) throw new NotFoundException('El programa no existe');
-
     return programa;
   }
 
@@ -69,6 +49,6 @@ export class ProgramasService {
 
   async remove(id: number) {
     const programa = await this.findOne(id);
-    if (programa) return this.programasRepository.softRemove(programa);
+    return this.programasRepository.softRemove(programa);
   }
 }
