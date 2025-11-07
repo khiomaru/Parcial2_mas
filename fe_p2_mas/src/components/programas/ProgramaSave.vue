@@ -33,6 +33,7 @@ const dialogVisible = computed({
 
 const programa = ref<Programa>({ ...props.programa })
 const estados = ['En Planificación', 'En curso', 'Finalizado']
+const modalidades = ['Presencial', 'Virtual', 'Mixto']
 
 async function obtenerNivelesAcademicos() {
   nivelesAcademicos.value = await http.get('niveles-academicos').then((response) => response.data)
@@ -73,6 +74,7 @@ async function handleSave() {
       costo: programa.value.costo,
       fechaInicio: programa.value.fechaInicio.toISOString(),
       estado: programa.value.estado,
+      modalidadClases: programa.value.modalidadClases,
     }
     console.log('Datos que envío:', body)
     if (props.modoEdicion) {
@@ -162,6 +164,16 @@ async function handleSave() {
           v-model="programa.estado"
           :options="estados"
           placeholder="Seleccionar un Estado"
+          class="flex-auto"
+        />
+      </div>
+      <div class="flex items-center gap-4 mb-4">
+        <label for="modalidadClases" class="font-semibold w-3">Modalidad Clases</label>
+        <Select
+          id="modalidadClases"
+          v-model="programa.modalidadClases"
+          :options="modalidades"
+          placeholder="Seleccionar una Modalidad"
           class="flex-auto"
         />
       </div>

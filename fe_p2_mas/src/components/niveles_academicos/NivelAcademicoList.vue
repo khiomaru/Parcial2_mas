@@ -49,7 +49,7 @@ defineExpose({ obtenerLista })
       <div class="col-7 pl-0 mt-3">
         <InputGroup>
           <InputGroupAddon><i class="pi pi-search"></i></InputGroupAddon>
-          <InputText v-model="busqueda" type="text" placeholder="Buscar por nombre" />
+          <InputText v-model="busqueda" type="text" placeholder="Buscar" />
         </InputGroup>
       </div>
       <table>

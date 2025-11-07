@@ -58,4 +58,14 @@ export class CreateProgramaDto {
       'El campo estado debe ser uno de los valores permitidos: En Planificación, En curso, Finalizado',
   })
   readonly estado: string;
+
+  @ApiProperty()
+  @IsNotEmpty({ message: 'El campo modalidadClases es obligatorio' })
+  @IsString({ message: 'El campo modalidadClases debe ser de tipo cadena' })
+  @MaxLength(20, { message: 'El campo modalidadClases no debe ser mayor a 20 caracteres' })
+  @IsIn(['Presencial', 'Virtual', 'Mixto'], {
+    message:
+      'El campo modalidadClases debe ser uno de los valores permitidos: Presencial, Virtual, Mixto',
+  })
+  readonly modalidadClases: string;
 }

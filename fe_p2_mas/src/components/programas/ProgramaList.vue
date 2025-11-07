@@ -3,7 +3,7 @@ import type { Programa } from '@/models/programa'
 import http from '@/plugins/axios'
 import { Dialog, InputGroup, InputGroupAddon, InputText } from 'primevue'
 import Button from 'primevue/button'
-import { computed, onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 const ENDPOINT = 'programas'
 const programas = ref<Programa[]>([])
@@ -13,17 +13,10 @@ const mostrarConfirmDialog = ref<boolean>(false)
 const busqueda = ref<string>('')
 
 async function obtenerLista() {
-  programas.value = await http.get(ENDPOINT).then((response) => response.data)
+  const params: Record<string, string> = {}
+  if (busqueda.value) params.busqueda = busqueda.value
+  programas.value = await http.get(ENDPOINT, { params }).then((response) => response.data)
 }
-
-const programasFiltrados = computed(() => {
-  return programas.value.filter(
-    (programa) =>
-      programa.nombre.toLowerCase().includes(busqueda.value.toLowerCase()) ||
-      programa.descripcion.toLowerCase().includes(busqueda.value.toLowerCase()) ||
-      programa.nivelAcademico.nombre.toLowerCase().includes(busqueda.value.toLowerCase()),
-  )
-})
 
 function emitirEdicion(programa: Programa) {
   emit('edit', programa)
@@ -40,6 +33,10 @@ async function eliminar() {
   mostrarConfirmDialog.value = false
 }
 
+watch(busqueda, () => {
+  obtenerLista()
+})
+
 onMounted(() => {
   obtenerLista()
 })
@@ -52,13 +49,10 @@ defineExpose({ obtenerLista })
       <div class="col-7 pl-0 mt-3">
         <InputGroup>
           <InputGroupAddon><i class="pi pi-search"></i></InputGroupAddon>
-          <InputText
-            v-model="busqueda"
-            type="text"
-            placeholder="Buscar por nombre, descripción o nivel académico"
-          />
+          <InputText v-model="busqueda" type="text" placeholder="Buscar" />
         </InputGroup>
       </div>
+
       <table>
         <thead>
           <tr>
@@ -71,11 +65,12 @@ defineExpose({ obtenerLista })
             <th>Costo</th>
             <th>Fecha Inicio</th>
             <th>Estado</th>
+            <th>Modalidad Clases</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(programa, index) in programasFiltrados" :key="programa.id">
+          <tr v-for="(programa, index) in programas" :key="programa.id">
             <td>{{ index + 1 }}</td>
             <td>{{ programa.nivelAcademico.nombre }}</td>
             <td>{{ programa.nombre }}</td>
@@ -85,6 +80,7 @@ defineExpose({ obtenerLista })
             <td>{{ programa.costo }}</td>
             <td>{{ programa.fechaInicio }}</td>
             <td>{{ programa.estado }}</td>
+            <td>{{ programa.modalidadClases }}</td>
             <td>
               <Button
                 icon="pi pi-pencil"
@@ -101,8 +97,8 @@ defineExpose({ obtenerLista })
               />
             </td>
           </tr>
-          <tr v-if="programasFiltrados.length === 0">
-            <td colspan="4">No se encontraron resultados.</td>
+          <tr v-if="programas.length === 0">
+            <td colspan="11">No se encontraron resultados.</td>
           </tr>
         </tbody>
       </table>

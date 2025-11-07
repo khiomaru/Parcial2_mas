@@ -23,11 +23,20 @@ export class ProgramasService {
     return this.programasRepository.save(programa);
   }
 
-  async findAll(): Promise<Programa[]> {
-    const programas = await this.programasRepository.find({
-      relations: { nivelAcademico: true },
-      order: { idNivelAcademico: 'ASC' },
-    });
+  async findAll(busqueda?: string): Promise<Programa[]> {
+    const queryBuilder = this.programasRepository
+      .createQueryBuilder('programa')
+      .leftJoinAndSelect('programa.nivelAcademico', 'nivelAcademico')
+      .orderBy('programa.idNivelAcademico', 'ASC');
+
+    if (busqueda) {
+      queryBuilder.where(
+        'programa.nombre ILIKE :busqueda OR programa.descripcion ILIKE :busqueda OR programa.estado ILIKE :busqueda OR programa.modalidadClases ILIKE :busqueda OR nivelAcademico.nombre ILIKE :busqueda',
+        { busqueda: `%${busqueda}%` },
+      );
+    }
+
+    const programas = await queryBuilder.getMany();
     console.log('Programas encontrados:', programas);
     return programas;
   }
